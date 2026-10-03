@@ -1,0 +1,153 @@
+[gd_scene load_steps=13 format=4 uid="uid://sudrcpfk7pku"]
+
+[ext_resource type="Script" path="res://Background/world.gd" id="1_y8ig0"]
+[ext_resource type="Texture2D" uid="uid://npom2hmprwac" path="res://Background/field_tilemap.png" id="4_1yanp"]
+[ext_resource type="Texture2D" uid="uid://dd4ja47eejqk2" path="res://Background/basic_block.png" id="4_4iukj"]
+[ext_resource type="Texture2D" uid="uid://cidgla3oqkmoa" path="res://Background/MountainsLayers/sky.png" id="5_2psu6"]
+[ext_resource type="Texture2D" uid="uid://bcnsdxg457gf4" path="res://Background/MountainsLayers/far-mountains.png" id="6_7dna0"]
+[ext_resource type="Texture2D" uid="uid://nei8g3fblyr7" path="res://Background/MountainsLayers/near-clouds.png" id="6_cph5y"]
+[ext_resource type="Texture2D" uid="uid://cub65x0y0ym76" path="res://Background/MountainsLayers/mountains.png" id="6_ra5y5"]
+[ext_resource type="Texture2D" uid="uid://bbw3l7ns3qacb" path="res://Background/MountainsLayers/far-clouds.png" id="7_erv7c"]
+[ext_resource type="Texture2D" uid="uid://dxjs1s2ge2yl0" path="res://Background/MountainsLayers/trees.png" id="9_wmeop"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5jt2f"]
+texture = ExtResource("4_4iukj")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4tmkh"]
+texture = ExtResource("4_1yanp")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, 1.875, 0.25, -1.125, 4.5, 1.25, 4.75, 5.25, -5, 6.625)
+
+[sub_resource type="TileSet" id="TileSet_r18c7"]
+physics_layer_0/collision_layer = 8
+physics_layer_0/collision_mask = 0
+sources/1 = SubResource("TileSetAtlasSource_5jt2f")
+sources/2 = SubResource("TileSetAtlasSource_4tmkh")
+
+[node name="World" type="StaticBody2D" groups=["World"]]
+collision_mask = 0
+script = ExtResource("1_y8ig0")
+metadata/_edit_group_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(32, 160, 32, 0, 0, 0, 0, 176, 512, 176, 512, 128, 448, 128, 448, 0, 416, 0, 416, 0, 416, 48, 352, 48, 352, 80, 416, 80, 416, 128, 208, 128, 208, 160)
+
+[node name="Polygon2D" type="Polygon2D" parent="CollisionPolygon2D"]
+color = Color(0.756863, 0.380392, 0.0470588, 1)
+
+[node name="BackgroundTiles" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAABAAAAAQACAAAAAAABAAEAAQACAAEAAAABAAIAAQACAAEAAAABAAMAAQACAAEAAAABAAQAAQACAAEAAAABAAUAAQACAAEAAAABAAYAAQACAAEAAAABAAcAAQACAAEAAAABAAgAAQACAAEAAAABAAkAAQACAAEAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAEAAAAAAAUAAQAAAAEAAAAAAAYAAQAAAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAEAAAAAAAkAAQAAAAEAAAAAAAoAAQAAAAIAAAABAAoAAQABAAIAAAACAAoAAQABAAIAAAADAAoAAQABAAIAAAAEAAoAAQABAAIAAAAFAAoAAQABAAIAAAAGAAoAAQABAAIAAAAHAAoAAQABAAIAAAAIAAoAAQABAAIAAAAJAAoAAQABAAIAAAAKAAoAAQABAAIAAAALAAoAAQABAAIAAAAMAAoAAQABAAIAAAANAAoAAQABAAIAAAAOAAoAAQABAAIAAAAPAAoAAQABAAIAAAAQAAoAAQABAAIAAAARAAoAAQABAAIAAAASAAoAAQABAAIAAAATAAoAAQABAAIAAAAUAAoAAQABAAIAAAAVAAoAAQABAAIAAAAWAAoAAQABAAIAAAAXAAoAAQABAAIAAAAYAAoAAQABAAIAAAAZAAoAAQABAAIAAAAaAAoAAQABAAIAAAAbAAoAAQABAAIAAAANAAgAAQAAAAAAAAAbAAAAAQACAAAAAAAaAAAAAQAAAAAAAAAaAAEAAQAAAAEAAAAaAAIAAQAAAAEAAAAaAAMAAQABAAEAAAAaAAQAAQABAAEAAAAaAAUAAQAAAAEAAAAaAAYAAQAAAAEAAAAaAAcAAQAAAAEAAAAZAAgAAQABAAAAAAAYAAgAAQABAAAAAAAXAAgAAQABAAAAAAAWAAgAAQABAAAAAAAVAAgAAQABAAAAAAAUAAgAAQABAAAAAAATAAgAAQABAAAAAAASAAgAAQABAAAAAAARAAgAAQABAAAAAAAQAAgAAQABAAAAAAAPAAgAAQABAAAAAAAOAAgAAQABAAAAAAANAAkAAQAAAAEAAAAOAAkAAQABAAEAAAAPAAkAAQABAAEAAAAQAAkAAQABAAEAAAARAAkAAQABAAEAAAASAAkAAQABAAEAAAATAAkAAQABAAEAAAAUAAkAAQABAAEAAAAVAAkAAQABAAEAAAAWAAkAAQABAAEAAAAXAAkAAQABAAEAAAAYAAkAAQABAAEAAAAZAAkAAQABAAEAAAAaAAgAAQABAAEAAAAaAAkAAQABAAEAAAAbAAEAAQACAAEAAAAbAAIAAQACAAEAAAAbAAMAAQACAAEAAAAbAAQAAQACAAEAAAAbAAUAAQACAAEAAAAbAAYAAQACAAEAAAAbAAcAAQACAAEAAAAbAAgAAQABAAEAAAAbAAkAAQABAAEAAAAWAAQAAQAAAAIAAAAWAAMAAQAAAAAAAAAXAAMAAQABAAAAAAAYAAMAAQABAAAAAAAZAAMAAQABAAAAAAAXAAQAAQABAAIAAAAYAAQAAQABAAIAAAAZAAQAAQABAAIAAAAcAAoAAQABAAIAAAAdAAoAAQABAAIAAAAeAAoAAQABAAIAAAAfAAoAAQACAAIAAAAcAAgAAQABAAAAAAAdAAgAAQABAAAAAAAeAAgAAQABAAAAAAAfAAgAAQACAAAAAAAfAAkAAQACAAEAAAAeAAkAAQABAAEAAAAdAAkAAQABAAEAAAAcAAkAAQABAAEAAAAOAAcAAgAAAAAAAAAPAAcAAgAAAAAAAAA=")
+tile_set = SubResource("TileSet_r18c7")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/sky"]
+texture = ExtResource("5_2psu6")
+centered = false
+
+[node name="FarClouds" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(128, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/FarClouds"]
+texture = ExtResource("7_erv7c")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/FarClouds"]
+position = Vector2(128, 0)
+texture = ExtResource("7_erv7c")
+centered = false
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/FarClouds"]
+position = Vector2(256, 0)
+texture = ExtResource("7_erv7c")
+centered = false
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxBackground/FarClouds"]
+position = Vector2(384, 0)
+texture = ExtResource("7_erv7c")
+centered = false
+
+[node name="NearClouds1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.3, 0.3)
+motion_mirroring = Vector2(144, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/NearClouds1"]
+texture = ExtResource("6_cph5y")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/NearClouds1"]
+position = Vector2(144, 0)
+texture = ExtResource("6_cph5y")
+centered = false
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/NearClouds1"]
+position = Vector2(288, 0)
+texture = ExtResource("6_cph5y")
+centered = false
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxBackground/NearClouds1"]
+position = Vector2(432, 0)
+texture = ExtResource("6_cph5y")
+centered = false
+
+[node name="FarMountains" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(320, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/FarMountains"]
+texture = ExtResource("6_7dna0")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/FarMountains"]
+position = Vector2(160, 0)
+texture = ExtResource("6_7dna0")
+centered = false
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/FarMountains"]
+position = Vector2(320, 0)
+texture = ExtResource("6_7dna0")
+centered = false
+
+[node name="NearMountains" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_filter = 1
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(320, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/NearMountains"]
+texture = ExtResource("6_ra5y5")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/NearMountains"]
+position = Vector2(320, 0)
+texture = ExtResource("6_ra5y5")
+centered = false
+
+[node name="Tree" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(240, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Tree"]
+texture = ExtResource("9_wmeop")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/Tree"]
+position = Vector2(240, 0)
+texture = ExtResource("9_wmeop")
+centered = false
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/Tree"]
+position = Vector2(480, 0)
+texture = ExtResource("9_wmeop")
+centered = false

@@ -1,0 +1,404 @@
+[gd_scene load_steps=31 format=3 uid="uid://d2l1oof6loxxe"]
+
+[ext_resource type="Script" path="res://Base/finite_state_machine.gd" id="1_6ddrn"]
+[ext_resource type="Script" path="res://Player/player.gd" id="1_62trq"]
+[ext_resource type="Texture2D" uid="uid://cwkal2f5yptyh" path="res://Player/Sprites/idle.png" id="3_lnawk"]
+[ext_resource type="PackedScene" uid="uid://c661311buqoiy" path="res://ParticleEffects/Death_animation.tscn" id="3_q2ecl"]
+[ext_resource type="Resource" uid="uid://dvyc820lqfjrx" path="res://Player/Sprites/DefaultPlayerCharacter.tres" id="3_vcj7w"]
+[ext_resource type="Texture2D" uid="uid://cjooboer2dbvg" path="res://Player/Sprites/attack_sheet.png" id="6_1m13p"]
+[ext_resource type="Script" path="res://Player/States/player_movement.gd" id="8_ip4se"]
+[ext_resource type="Script" path="res://Player/States/player_default.gd" id="8_u63yy"]
+[ext_resource type="Script" path="res://Player/States/player_dash.gd" id="9_s3h73"]
+[ext_resource type="Script" path="res://Player/States/player_jump.gd" id="13_y4bgm"]
+[ext_resource type="Script" path="res://Player/States/player_slide.gd" id="14_axm0f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kltw"]
+atlas = ExtResource("3_lnawk")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jmcr"]
+atlas = ExtResource("6_1m13p")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4jdja"]
+atlas = ExtResource("6_1m13p")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gpo4"]
+atlas = ExtResource("6_1m13p")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj85q"]
+atlas = ExtResource("6_1m13p")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dd88k"]
+atlas = ExtResource("6_1m13p")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpohf"]
+atlas = ExtResource("3_lnawk")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pceiq"]
+atlas = ExtResource("3_lnawk")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yvmua"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kltw")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6jmcr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4jdja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gpo4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sj85q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dd88k")
+}],
+"loop": true,
+"name": &"sword_swing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dpohf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pceiq")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gmy1i"]
+radius = 4.0
+height = 9.0
+
+[sub_resource type="Animation" id="Animation_rlvre"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_dkjjd"]
+resource_name = "idle"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_wm2vr"]
+resource_name = "swing_attack"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"sword_swing"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(5.5, -5.5), Vector2(7, -5), Vector2(8, -2.5), Vector2(8, 1), Vector2(8, 3)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_13m0h"]
+resource_name = "walk"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h2u1g"]
+_data = {
+"RESET": SubResource("Animation_rlvre"),
+"idle": SubResource("Animation_dkjjd"),
+"swing_attack": SubResource("Animation_wm2vr"),
+"walk": SubResource("Animation_13m0h")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1qhw2"]
+radius = 3.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hw80v"]
+radius = 3.5
+height = 7.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pkgh1"]
+size = Vector2(5, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3ltn"]
+size = Vector2(5, 5)
+
+[node name="Player" type="CharacterBody2D" groups=["Bodies", "Player"]]
+process_mode = 1
+collision_layer = 2
+collision_mask = 5
+floor_snap_length = 3.0
+platform_floor_layers = 4294967291
+safe_margin = 0.2
+script = ExtResource("1_62trq")
+character_data = ExtResource("3_vcj7w")
+death_particles = ExtResource("3_q2ecl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_yvmua")
+animation = &"idle"
+
+[node name="WorldCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0.4)
+shape = SubResource("CapsuleShape2D_gmy1i")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+editor_description = "your mother"
+libraries = {
+"": SubResource("AnimationLibrary_h2u1g")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+process_mode = 3
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 15.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.15
+drag_top_margin = 0.15
+drag_right_margin = 0.15
+drag_bottom_margin = 0.15
+editor_draw_drag_margin = true
+
+[node name="Detection" type="Node2D" parent="."]
+
+[node name="HazzardDetection" type="Area2D" parent="Detection"]
+collision_layer = 2
+collision_mask = 8
+
+[node name="HazzardDetectionHB" type="CollisionShape2D" parent="Detection/HazzardDetection"]
+position = Vector2(-0.5, 0)
+shape = SubResource("CapsuleShape2D_1qhw2")
+
+[node name="LiquidDetection" type="Area2D" parent="Detection"]
+collision_layer = 0
+collision_mask = 32
+
+[node name="LiquidDetectionHB" type="CollisionShape2D" parent="Detection/LiquidDetection"]
+position = Vector2(-0.5, -2)
+shape = SubResource("CapsuleShape2D_hw80v")
+
+[node name="MovementObjDetection" type="Area2D" parent="Detection"]
+collision_layer = 0
+collision_mask = 16
+
+[node name="MovementObjDetectionHB" type="CollisionShape2D" parent="Detection/MovementObjDetection"]
+position = Vector2(-0.5, 5.5)
+shape = SubResource("RectangleShape2D_pkgh1")
+
+[node name="SwordSwingDetection" type="Area2D" parent="Detection"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="SwordSwingHB" type="CollisionShape2D" parent="Detection/SwordSwingDetection"]
+position = Vector2(5.5, -5.5)
+shape = SubResource("RectangleShape2D_f3ltn")
+disabled = true
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="CoyoteJumpTimer" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="CrashTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="DashTimer" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="iFrameTimer" type="Timer" parent="Timers"]
+wait_time = 0.4
+one_shot = true
+
+[node name="JumpTimer" type="Timer" parent="Timers"]
+wait_time = 0.08
+one_shot = true
+
+[node name="QuickFallTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="SlideTimer" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="ThroughPlatformTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="WallJumpTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="WaterJumpTimer" type="Timer" parent="Timers"]
+wait_time = 0.12
+one_shot = true
+
+[node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("state")]
+script = ExtResource("1_6ddrn")
+state = NodePath("PlayerDefault")
+
+[node name="PlayerDefault" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animation", "animator", "dash_timer", "jump_timer", "liquid_detection")]
+script = ExtResource("8_u63yy")
+actor = NodePath("../..")
+animation = NodePath("../../AnimationPlayer")
+animator = NodePath("../../AnimatedSprite2D")
+dash_timer = NodePath("../../Timers/DashTimer")
+jump_timer = NodePath("../../Timers/JumpTimer")
+liquid_detection = NodePath("../../Detection/LiquidDetection")
+
+[node name="PlayerDash" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "damage_detection", "animator", "animation", "dash_timer", "crash_timer")]
+script = ExtResource("9_s3h73")
+actor = NodePath("../..")
+damage_detection = NodePath("../../Detection/HazzardDetection/HazzardDetectionHB")
+animator = NodePath("../../AnimatedSprite2D")
+animation = NodePath("../../AnimationPlayer")
+dash_timer = NodePath("../../Timers/DashTimer")
+crash_timer = NodePath("../../Timers/CrashTimer")
+
+[node name="PlayerMovement" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animator", "animation", "coyote_timer", "dash_timer", "jump_timer", "liquid_detection")]
+script = ExtResource("8_ip4se")
+actor = NodePath("../..")
+animator = NodePath("../../AnimatedSprite2D")
+animation = NodePath("../../AnimationPlayer")
+coyote_timer = NodePath("../../Timers/CoyoteJumpTimer")
+dash_timer = NodePath("../../Timers/DashTimer")
+jump_timer = NodePath("../../Timers/JumpTimer")
+liquid_detection = NodePath("../../Detection/LiquidDetection")
+
+[node name="PlayerJump" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "jump_timer", "coyote_jump_timer", "wall_jump_timer", "dash_timer", "animation", "animator", "movement_obj_detection", "liquid_detection")]
+script = ExtResource("13_y4bgm")
+actor = NodePath("../..")
+jump_timer = NodePath("../../Timers/JumpTimer")
+coyote_jump_timer = NodePath("../../Timers/CoyoteJumpTimer")
+wall_jump_timer = NodePath("../../Timers/WallJumpTimer")
+dash_timer = NodePath("../../Timers/DashTimer")
+animation = NodePath("../../AnimationPlayer")
+animator = NodePath("../../AnimatedSprite2D")
+movement_obj_detection = NodePath("../../Detection/MovementObjDetection")
+liquid_detection = NodePath("../../Detection/LiquidDetection")
+
+[node name="PlayerSlide" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "damage_detection", "animator", "animation", "dash_timer", "crash_timer")]
+script = ExtResource("14_axm0f")
+actor = NodePath("../..")
+damage_detection = NodePath("../../Detection/HazzardDetection/HazzardDetectionHB")
+animator = NodePath("../../AnimatedSprite2D")
+animation = NodePath("../../AnimationPlayer")
+dash_timer = NodePath("../../Timers/DashTimer")
+crash_timer = NodePath("../../Timers/CrashTimer")

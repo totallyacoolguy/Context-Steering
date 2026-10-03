@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="PlayerCharacterData" load_steps=2 format=3 uid="uid://dvyc820lqfjrx"]
+
+[ext_resource type="Script" path="res://Player/PlayerCharacterData.gd" id="1_1sq1n"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_1sq1n")
+HP = 3
+speed = 150.0
+dash_speed = 450.0
+gravity_scale = 1.25
+gravity_limit = 350
+water_gravity_limit = 80
+jump_velocity = -350.0
+short_jump_scalar = 0.7
+wall_bounce = 200.0
+acceleration = 3000.0
+friction = 1000.0
+air_resistance = 200.0
+air_acceleration = 3000.0
+water_acceleration = 2500.0
+launch_air_resistance = 200.0
+original_air_resistance = 1000.0
+push = 15.0
+impulse_application_rate = 0.25
+jump_velocity_crash = -100.0
+wall_crash = 75.0
+platform_fallthrough_num = 5
+dash_stop_num = 150
+slide_stop_num = 150
