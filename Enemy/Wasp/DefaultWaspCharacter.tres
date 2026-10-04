@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="WaspCharacterData" load_steps=3 format=3 uid="uid://dsnknp1qji87y"]
+
+[ext_resource type="Script" path="res://Enemy/Wasp/WaspCharacterData.gd" id="1_nnybk"]
+
+[sub_resource type="Curve" id="Curve_fo3rt"]
+_data = [Vector2(0.00349651, 0), 0.0, 0.0, 0, 0, Vector2(0.552632, 0.798137), 1.07391, 1.07391, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_nnybk")
+HP = 4
+gravity_scale = 1.0
+speed = 100.0
+friction = 1000.0
+acceleration = 10.0
+Hdamage_bounce = 100
+Ldamage_bounce = 200
+push = 15.0
+impulse_application_rate = 0.25
+damp = 0.6
+num_arrays = 32
+ray_direction = []
+interest = []
+danger = []
+danger_ray_length = 25.0
+chosen_dir = Vector2(0, 0)
+ray_orgin_displacement = Vector2(0, 0)
+ray_skew = Vector2(0, 0)
+interest_scalar = 2.0
+danger_scalar = 1.0
+danger_curve = SubResource("Curve_fo3rt")
+min_dot_chase = 0.0
+gravity_limit = 350
+flip_threshold = 3
+out_of_sight_threshold = 10
+tackle_finish_threshold = 8
+halt_distance = 25
+show_debug_rays = false

@@ -1,0 +1,183 @@
+[gd_scene load_steps=18 format=3 uid="uid://b7hmnnleurgei"]
+
+[ext_resource type="Script" path="res://Enemy/Wasp/wasp.gd" id="2_wem8o"]
+[ext_resource type="Resource" uid="uid://dsnknp1qji87y" path="res://Enemy/Wasp/DefaultWaspCharacter.tres" id="3_knkq3"]
+[ext_resource type="PackedScene" uid="uid://c661311buqoiy" path="res://ParticleEffects/Death_animation.tscn" id="3_yf5fg"]
+[ext_resource type="Texture2D" uid="uid://dhu6r7jlnou03" path="res://Enemy/Wasp/test_bad_guy.png" id="4_8sowr"]
+[ext_resource type="Script" path="res://Base/finite_state_machine.gd" id="5_g3pw5"]
+[ext_resource type="Script" path="res://Enemy/Wasp/States/wasp_idle.gd" id="6_vbif0"]
+[ext_resource type="Script" path="res://Enemy/Wasp/States/wasp_chase.gd" id="7_vrnkv"]
+[ext_resource type="Script" path="res://Enemy/Wasp/States/wasp_tackle.gd" id="8_bpfd3"]
+[ext_resource type="Script" path="res://Enemy/Wasp/States/wasp_out_of_sight.gd" id="9_k7n1g"]
+[ext_resource type="Script" path="res://Enemy/Wasp/States/wasp_surround.gd" id="10_gtk1w"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4p75x"]
+radius = 6.0
+height = 12.0
+
+[sub_resource type="Animation" id="Animation_85ccn"]
+resource_name = "laser_shot"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cj27e"]
+_data = {
+"laser_shot": SubResource("Animation_85ccn")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ia4gq"]
+radius = 9.0
+height = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b71w1"]
+radius = 90.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eeh0c"]
+radius = 40.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2tcu5"]
+radius = 8.0
+height = 24.0
+
+[node name="Wasp" type="CharacterBody2D" groups=["Bodies"]]
+collision_layer = 4
+collision_mask = 7
+platform_floor_layers = 4294967289
+safe_margin = 0.1
+script = ExtResource("2_wem8o")
+character_data = ExtResource("3_knkq3")
+death_particle = ExtResource("3_yf5fg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+use_parent_material = true
+texture = ExtResource("4_8sowr")
+
+[node name="WorldCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_4p75x")
+
+[node name="DeadCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-12, 0, -12, -2, -11, -4, -9, -5, 4, -5, 11, -5, 10, -2, 9, 1, 8, 3, 6, 5, 3, 7, -6, 7, -10, 5, -12, 3)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cj27e")
+}
+
+[node name="RayCast2DPatrol" type="RayCast2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+
+[node name="Detection" type="Node2D" parent="."]
+
+[node name="DamageDetection" type="Area2D" parent="Detection"]
+visible = false
+position = Vector2(2, -5)
+collision_layer = 0
+collision_mask = 4
+
+[node name="DamageDetectionHB" type="CollisionShape2D" parent="Detection/DamageDetection"]
+position = Vector2(-4, 5)
+shape = SubResource("CapsuleShape2D_ia4gq")
+
+[node name="PlayerDetection" type="Area2D" parent="Detection"]
+visible = false
+collision_layer = 0
+collision_mask = 2
+
+[node name="PlayerDectectionHB" type="CollisionShape2D" parent="Detection/PlayerDetection"]
+shape = SubResource("CircleShape2D_b71w1")
+
+[node name="TackleDetection" type="Area2D" parent="Detection"]
+visible = false
+collision_layer = 0
+collision_mask = 2
+
+[node name="TackleDetectionHB" type="CollisionShape2D" parent="Detection/TackleDetection"]
+shape = SubResource("CircleShape2D_eeh0c")
+
+[node name="SlamDetection" type="Area2D" parent="Detection"]
+collision_layer = 8
+collision_mask = 2
+
+[node name="SlamDetectionHB" type="CollisionShape2D" parent="Detection/SlamDetection"]
+position = Vector2(-2, 1)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_2tcu5")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="iFrameDamage" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+
+[node name="KBTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="TackleInterval" type="Timer" parent="Timers"]
+wait_time = 3.0
+one_shot = true
+
+[node name="UnstuckTimer" type="Timer" parent="Timers"]
+wait_time = 0.25
+one_shot = true
+
+[node name="TackleCDTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="TackleRandom" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("state")]
+script = ExtResource("5_g3pw5")
+state = NodePath("WaspSurround")
+
+[node name="WaspIdle" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "kb_timer", "player_detection", "player_detectionHB", "raycast")]
+script = ExtResource("6_vbif0")
+actor = NodePath("../..")
+kb_timer = NodePath("../../Timers/KBTimer")
+player_detection = NodePath("../../Detection/PlayerDetection")
+player_detectionHB = NodePath("../../Detection/PlayerDetection/PlayerDectectionHB")
+raycast = NodePath("../../RayCast2D")
+
+[node name="WaspChase" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "player_detection", "player_detectionHB", "tackle_detection", "kb_timer", "tackle_cd", "raycast", "raycast_patrol")]
+script = ExtResource("7_vrnkv")
+actor = NodePath("../..")
+player_detection = NodePath("../../Detection/PlayerDetection")
+player_detectionHB = NodePath("../../Detection/PlayerDetection/PlayerDectectionHB")
+tackle_detection = NodePath("../../Detection/TackleDetection")
+kb_timer = NodePath("../../Timers/KBTimer")
+tackle_cd = NodePath("../../Timers/TackleCDTimer")
+raycast = NodePath("../../RayCast2D")
+raycast_patrol = NodePath("../../RayCast2DPatrol")
+
+[node name="WaspTackle" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("tackle_detection", "damage_detection", "slam_detection", "slam_detection_HB", "actor", "raycast", "animation", "tackle_interval", "kb_timer", "tackle_cd")]
+script = ExtResource("8_bpfd3")
+tackle_detection = NodePath("../../Detection/TackleDetection")
+damage_detection = NodePath("../../Detection/DamageDetection")
+slam_detection = NodePath("../../Detection/SlamDetection")
+slam_detection_HB = NodePath("../../Detection/SlamDetection/SlamDetectionHB")
+actor = NodePath("../..")
+raycast = NodePath("../../RayCast2D")
+animation = NodePath("../../Sprite2D")
+tackle_interval = NodePath("../../Timers/TackleInterval")
+kb_timer = NodePath("../../Timers/KBTimer")
+tackle_cd = NodePath("../../Timers/TackleCDTimer")
+
+[node name="WaspOutOfSight" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "player_detection", "player_detectionHB", "tackle_detection", "kb_timer", "unstuck_timer", "raycast", "raycast_patrol")]
+script = ExtResource("9_k7n1g")
+actor = NodePath("../..")
+player_detection = NodePath("../../Detection/PlayerDetection")
+player_detectionHB = NodePath("../../Detection/PlayerDetection/PlayerDectectionHB")
+tackle_detection = NodePath("../../Detection/TackleDetection")
+kb_timer = NodePath("../../Timers/KBTimer")
+unstuck_timer = NodePath("../../Timers/UnstuckTimer")
+raycast = NodePath("../../RayCast2D")
+raycast_patrol = NodePath("../../RayCast2DPatrol")
+
+[node name="WaspSurround" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "tackle_detection", "player_detectionHB", "tackle_random", "raycast")]
+script = ExtResource("10_gtk1w")
+actor = NodePath("../..")
+tackle_detection = NodePath("../../Detection/TackleDetection")
+player_detectionHB = NodePath("../../Detection/PlayerDetection/PlayerDectectionHB")
+tackle_random = NodePath("../../Timers/TackleRandom")
+raycast = NodePath("../../RayCast2D")

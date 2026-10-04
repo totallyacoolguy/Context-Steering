@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://e7pd5wgt4jxs"]
+[gd_scene load_steps=11 format=3 uid="uid://e7pd5wgt4jxs"]
 
 [ext_resource type="PackedScene" uid="uid://sudrcpfk7pku" path="res://Background/World.tscn" id="1_vha76"]
 [ext_resource type="PackedScene" uid="uid://d2l1oof6loxxe" path="res://Player/Player.tscn" id="2_2f188"]
 [ext_resource type="Script" path="res://Player/PlayerCharacterData.gd" id="3_7w0gn"]
 [ext_resource type="PackedScene" uid="uid://bujliqtox4syc" path="res://Obstacles/Moving_platform.tscn" id="4_rv76j"]
 [ext_resource type="PackedScene" uid="uid://mt2ybnuix5e4" path="res://Obstacles/Conveyor.tscn" id="5_2lfbg"]
+[ext_resource type="PackedScene" uid="uid://b7hmnnleurgei" path="res://Enemy/Wasp/Wasp.tscn" id="6_7voxp"]
+[ext_resource type="Script" path="res://Enemy/Wasp/WaspCharacterData.gd" id="7_16tuu"]
 
 [sub_resource type="Resource" id="Resource_lywg3"]
 resource_local_to_scene = true
@@ -33,7 +35,43 @@ platform_fallthrough_num = 5
 dash_stop_num = 150
 slide_stop_num = 150
 
-[node name="Main" type="Node" groups=["Player"]]
+[sub_resource type="Curve" id="Curve_fo3rt"]
+_data = [Vector2(0.00349651, 0), 0.0, 0.0, 0, 0, Vector2(0.552632, 0.798137), 1.07391, 1.07391, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="Resource_fftf8"]
+resource_local_to_scene = true
+script = ExtResource("7_16tuu")
+HP = 4
+gravity_scale = 1.0
+speed = 100.0
+friction = 1000.0
+acceleration = 10.0
+Hdamage_bounce = 100
+Ldamage_bounce = 200
+push = 15.0
+impulse_application_rate = 0.25
+damp = 0.6
+num_arrays = 32
+ray_direction = []
+interest = []
+danger = []
+danger_ray_length = 40.0
+chosen_dir = Vector2(0, 0)
+ray_orgin_displacement = Vector2(0, 0)
+ray_skew = Vector2(0, 0)
+interest_scalar = 2.0
+danger_scalar = 1.0
+danger_curve = SubResource("Curve_fo3rt")
+min_dot_chase = 0.0
+gravity_limit = 350
+flip_threshold = 3
+out_of_sight_threshold = 10
+tackle_finish_threshold = 8
+halt_distance = 25
+show_debug_rays = true
+
+[node name="Main" type="Node"]
 
 [node name="World" parent="." instance=ExtResource("1_vha76")]
 
@@ -57,3 +95,7 @@ position = Vector2(462, 119)
 [node name="Conveyor3" parent="." instance=ExtResource("5_2lfbg")]
 position = Vector2(588, 84)
 reversed = true
+
+[node name="Wasp" parent="." instance=ExtResource("6_7voxp")]
+position = Vector2(311, 71)
+character_data = SubResource("Resource_fftf8")
