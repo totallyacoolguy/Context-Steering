@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://mt2ybnuix5e4"]
+
+[ext_resource type="Texture2D" uid="uid://5oki5lfbx467" path="res://icon.svg" id="1_jii3c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3o0d"]
+atlas = ExtResource("1_jii3c")
+region = Rect2(0, 0, 880, 125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ajyce"]
+size = Vector2(880, 120)
+
+[sub_resource type="Animation" id="Animation_ylkv5"]
+resource_name = "Forward"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:constant_linear_velocity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(100, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture:region")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Rect2(0, 0, 880, 125), Rect2(-895, 0, 880, 125)]
+}
+
+[sub_resource type="Animation" id="Animation_88c5b"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:constant_linear_velocity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(100, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture:region")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 0, 880, 125)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_71cwt"]
+_data = {
+"Forward": SubResource("Animation_ylkv5"),
+"RESET": SubResource("Animation_88c5b")
+}
+
+[node name="Conveyor" type="StaticBody2D" groups=["World"]]
+scale = Vector2(0.1, 0.1)
+collision_layer = 17
+collision_mask = 0
+constant_linear_velocity = Vector2(100, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = SubResource("AtlasTexture_w3o0d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ajyce")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_71cwt")
+}
+autoplay = "Forward"
