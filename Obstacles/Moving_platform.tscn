@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bujliqtox4syc"]
+[gd_scene load_steps=8 format=3 uid="uid://bujliqtox4syc"]
 
+[ext_resource type="Script" path="res://Obstacles/moving_platform.gd" id="1_cd34o"]
 [ext_resource type="Texture2D" uid="uid://5oki5lfbx467" path="res://icon.svg" id="1_f637f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dxdg"]
@@ -37,13 +38,32 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(100, 0), Vector2(50, -30), Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_2h4un"]
+resource_name = "reverse_triangle_movement"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1.3, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(50, -30), Vector2(100, 0), Vector2(0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jhwyr"]
 _data = {
 "RESET": SubResource("Animation_lxgpu"),
+"reverse_triangle_movement": SubResource("Animation_2h4un"),
 "triangle_movement": SubResource("Animation_qplww")
 }
 
 [node name="MovingPlatform" type="Node2D"]
+script = ExtResource("1_cd34o")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="." groups=["World"]]
 collision_layer = 17

@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://e7pd5wgt4jxs"]
+[gd_scene load_steps=7 format=3 uid="uid://e7pd5wgt4jxs"]
 
 [ext_resource type="PackedScene" uid="uid://sudrcpfk7pku" path="res://Background/World.tscn" id="1_vha76"]
 [ext_resource type="PackedScene" uid="uid://d2l1oof6loxxe" path="res://Player/Player.tscn" id="2_2f188"]
 [ext_resource type="Script" path="res://Player/PlayerCharacterData.gd" id="3_7w0gn"]
+[ext_resource type="PackedScene" uid="uid://bujliqtox4syc" path="res://Obstacles/Moving_platform.tscn" id="4_rv76j"]
+[ext_resource type="PackedScene" uid="uid://mt2ybnuix5e4" path="res://Obstacles/Conveyor.tscn" id="5_2lfbg"]
 
 [sub_resource type="Resource" id="Resource_lywg3"]
 resource_local_to_scene = true
@@ -36,5 +38,22 @@ slide_stop_num = 150
 [node name="World" parent="." instance=ExtResource("1_vha76")]
 
 [node name="Player" parent="." instance=ExtResource("2_2f188")]
-position = Vector2(89, 122)
+position = Vector2(86, 136)
 character_data = SubResource("Resource_lywg3")
+
+[node name="MovingPlatform" parent="." instance=ExtResource("4_rv76j")]
+position = Vector2(252, 81)
+
+[node name="MovingPlatform2" parent="." instance=ExtResource("4_rv76j")]
+position = Vector2(386, 82)
+reversed = true
+
+[node name="Conveyor" parent="." instance=ExtResource("5_2lfbg")]
+position = Vector2(139, 84)
+
+[node name="Conveyor2" parent="." instance=ExtResource("5_2lfbg")]
+position = Vector2(462, 119)
+
+[node name="Conveyor3" parent="." instance=ExtResource("5_2lfbg")]
+position = Vector2(588, 84)
+reversed = true

@@ -1,13 +1,44 @@
-[gd_scene load_steps=7 format=3 uid="uid://mt2ybnuix5e4"]
+[gd_scene load_steps=9 format=3 uid="uid://mt2ybnuix5e4"]
 
+[ext_resource type="Script" path="res://Obstacles/conveyor.gd" id="1_5kcma"]
 [ext_resource type="Texture2D" uid="uid://5oki5lfbx467" path="res://icon.svg" id="1_jii3c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w3o0d"]
+resource_local_to_scene = true
 atlas = ExtResource("1_jii3c")
 region = Rect2(0, 0, 880, 125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ajyce"]
 size = Vector2(880, 120)
+
+[sub_resource type="Animation" id="Animation_d32nw"]
+resource_name = "Backward"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Rect2(0, 0, 880, 125), Rect2(895, 0, 880, 125)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:constant_linear_velocity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-100, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_ylkv5"]
 resource_name = "Forward"
@@ -66,6 +97,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_71cwt"]
 _data = {
+"Backward": SubResource("Animation_d32nw"),
 "Forward": SubResource("Animation_ylkv5"),
 "RESET": SubResource("Animation_88c5b")
 }
@@ -75,6 +107,7 @@ scale = Vector2(0.1, 0.1)
 collision_layer = 17
 collision_mask = 0
 constant_linear_velocity = Vector2(100, 0)
+script = ExtResource("1_5kcma")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_repeat = 2
@@ -87,4 +120,3 @@ shape = SubResource("RectangleShape2D_ajyce")
 libraries = {
 "": SubResource("AnimationLibrary_71cwt")
 }
-autoplay = "Forward"
