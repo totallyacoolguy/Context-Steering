@@ -57,7 +57,13 @@ func choose_direction() -> void:
 
 func chase_player(delta: float) -> void:
 	var desired_velocity: Vector2 = actor.character_data.chosen_dir * actor.character_data.speed
-	actor.velocity = actor.velocity.lerp(desired_velocity, actor.character_data.acceleration * delta)
+	var input_axis_x: float = Input.get_axis("move_left", "move_right")
+	var input_axis_y: float = Input.get_axis("move_up", "move_down")
+	## Stop movement when close enough
+	if (abs(actor.velocity.x) < 3 and abs(actor.velocity.y) < 3 and input_axis_x == 0 and input_axis_y == 0):
+		actor.velocity = Vector2.ZERO
+	else:
+		actor.velocity = actor.velocity.lerp(desired_velocity, actor.character_data.acceleration * delta)
 
 func draw_debug_rays(ray_origin: Vector2, ray_end: Vector2, collided: bool, rays_to_draw: Array) -> void:
 	rays_to_draw.append([
@@ -83,11 +89,11 @@ func set_danger() -> void:
 			var distance_to_collision = result.position.distance_to(ray_origin)
 			var max_distance = actor.character_data.danger_ray_length
 			if (result.collider is World): 
-				actor.character_data.danger[i] = (max_distance / distance_to_collision) * 200
+				actor.character_data.danger[i] = (max_distance / distance_to_collision) * 200 ## World Scaler
 			if (result.collider is Player): 
-				actor.character_data.danger[i] = (max_distance / distance_to_collision) * 200
+				actor.character_data.danger[i] = (max_distance / distance_to_collision) * 200 ## Player Scaler
 			if (result.collider is Wasp): 
-				actor.character_data.danger[i] = (max_distance / distance_to_collision) * .3
+				actor.character_data.danger[i] = (max_distance / distance_to_collision) * .3 ## Wasp Scaler
 			else: 
 				actor.character_data.danger[i] = (max_distance / distance_to_collision)
 		else:

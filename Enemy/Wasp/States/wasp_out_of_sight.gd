@@ -42,10 +42,6 @@ func _physics_process(delta: float) -> void:
 	set_danger()
 	choose_direction()
 	chase_player(delta)
-	#if (unstuck_timer.time_left <= 0 and actor.is_on_floor()): 
-		#var flip: int = 1 if direction_to_player.x > 0 else -1
-		#actor.velocity.y = flip * 150
-		#unstuck_timer.start()
 	
 	if (out_of_sight()):
 		idle.emit()
@@ -77,7 +73,6 @@ func choose_direction() -> void:
 func chase_player(delta: float) -> void:
 	var desired_velocity = actor.character_data.chosen_dir * actor.character_data.speed
 	actor.velocity = actor.velocity.lerp(desired_velocity, actor.character_data.acceleration * delta)
-	#actor.rotation = actor.velocity.angle()
 
 func draw_debug_rays(ray_origin: Vector2, ray_end: Vector2, collided: bool, rays_to_draw: Array) -> void:
 	rays_to_draw.append([
