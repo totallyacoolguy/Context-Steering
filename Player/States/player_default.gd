@@ -11,7 +11,6 @@ signal walk
 @export var animator: AnimatedSprite2D
 @export var dash_timer: Timer
 @export var jump_timer: Timer
-@export var liquid_detection: Area2D
 
 func _enter_state() -> void:
 	set_physics_process(true)

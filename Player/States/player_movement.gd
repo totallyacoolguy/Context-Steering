@@ -12,7 +12,6 @@ signal slide
 @export var coyote_timer: Timer
 @export var dash_timer: Timer
 @export var jump_timer: Timer
-@export var liquid_detection: Area2D
 
 func _ready() -> void:
 	set_physics_process(false)

@@ -14,12 +14,8 @@ extends CharacterBody2D
 @onready var detection: Node2D = $Detection
 @onready var hazzard_detection: Area2D = $Detection/HazzardDetection
 @onready var hazzard_detectionHB: CollisionShape2D = $Detection/HazzardDetection/HazzardDetectionHB
-@onready var liquid_detection: Area2D = $Detection/LiquidDetection
-@onready var liquid_detectionHB: CollisionShape2D = $Detection/LiquidDetection/LiquidDetectionHB
 @onready var movement_obj_detection: Area2D = $Detection/MovementObjDetection
 @onready var movement_obj_detectionHB: CollisionShape2D = $Detection/MovementObjDetection/MovementObjDetectionHB
-@onready var sword_swing_detection: Area2D = $Detection/SwordSwingDetection
-@onready var sword_swingHB: CollisionShape2D = $Detection/SwordSwingDetection/SwordSwingHB
 
 @onready var fsm: FiniteStateMachine = $FiniteStateMachine
 @onready var player_default: PlayerDefault = $FiniteStateMachine/PlayerDefault
@@ -108,14 +104,12 @@ func _process(_delta: float) -> void:
 
 func apply_gravity(delta: float) -> void:
 	if (not is_on_floor() and velocity.y < character_data.gravity_limit):
-		if (Input.is_action_just_pressed("move_down") and could_quick_fall and not liquid_detection.has_overlapping_areas()):
+		if (Input.is_action_just_pressed("move_down") and could_quick_fall):
 			velocity.y = character_data.gravity_limit
 		else:
 			velocity.y += gravity * character_data.gravity_scale * delta
 	elif (not is_on_floor()):
 		velocity.y = character_data.gravity_limit
-	if (liquid_detection.has_overlapping_areas() and velocity.y >= character_data.water_gravity_limit):
-		velocity.y = move_toward(velocity.y, character_data.water_gravity_limit, character_data.water_acceleration * delta)
 	if (Input.is_action_just_pressed("move_down") and drop_through_platform):
 		position.y += character_data.platform_fallthrough_num
 
@@ -135,7 +129,7 @@ func drop_down() -> void:
 		drop_through_platform = false
 
 func handle_jump_timer() -> void:
-	if (Input.is_action_just_pressed("move_up") and not liquid_detection.has_overlapping_areas()):
+	if (Input.is_action_just_pressed("move_up")):
 		jump_timer.start() 
 
 func quick_fall() -> void:

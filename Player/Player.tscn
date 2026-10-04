@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://d2l1oof6loxxe"]
+[gd_scene load_steps=29 format=3 uid="uid://d2l1oof6loxxe"]
 
 [ext_resource type="Script" path="res://Base/finite_state_machine.gd" id="1_6ddrn"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_62trq"]
@@ -92,18 +92,6 @@ height = 9.0
 
 [sub_resource type="Animation" id="Animation_rlvre"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:disabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 
 [sub_resource type="Animation" id="Animation_dkjjd"]
 resource_name = "idle"
@@ -160,30 +148,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [&"sword_swing"]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [Vector2(5.5, -5.5), Vector2(7, -5), Vector2(8, -2.5), Vector2(8, 1), Vector2(8, 3)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Detection/SwordSwingDetection/SwordSwingHB:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
 
 [sub_resource type="Animation" id="Animation_13m0h"]
 resource_name = "walk"
@@ -225,15 +189,8 @@ _data = {
 radius = 3.0
 height = 6.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hw80v"]
-radius = 3.5
-height = 7.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pkgh1"]
 size = Vector2(5, 1)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3ltn"]
-size = Vector2(5, 5)
 
 [node name="Player" type="CharacterBody2D" groups=["Bodies", "Player"]]
 process_mode = 1
@@ -283,14 +240,6 @@ collision_mask = 8
 position = Vector2(-0.5, 0)
 shape = SubResource("CapsuleShape2D_1qhw2")
 
-[node name="LiquidDetection" type="Area2D" parent="Detection"]
-collision_layer = 0
-collision_mask = 32
-
-[node name="LiquidDetectionHB" type="CollisionShape2D" parent="Detection/LiquidDetection"]
-position = Vector2(-0.5, -2)
-shape = SubResource("CapsuleShape2D_hw80v")
-
 [node name="MovementObjDetection" type="Area2D" parent="Detection"]
 collision_layer = 0
 collision_mask = 16
@@ -298,15 +247,6 @@ collision_mask = 16
 [node name="MovementObjDetectionHB" type="CollisionShape2D" parent="Detection/MovementObjDetection"]
 position = Vector2(-0.5, 5.5)
 shape = SubResource("RectangleShape2D_pkgh1")
-
-[node name="SwordSwingDetection" type="Area2D" parent="Detection"]
-collision_layer = 4
-collision_mask = 4
-
-[node name="SwordSwingHB" type="CollisionShape2D" parent="Detection/SwordSwingDetection"]
-position = Vector2(5.5, -5.5)
-shape = SubResource("RectangleShape2D_f3ltn")
-disabled = true
 
 [node name="Timers" type="Node" parent="."]
 
@@ -354,14 +294,13 @@ one_shot = true
 script = ExtResource("1_6ddrn")
 state = NodePath("PlayerDefault")
 
-[node name="PlayerDefault" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animation", "animator", "dash_timer", "jump_timer", "liquid_detection")]
+[node name="PlayerDefault" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animation", "animator", "dash_timer", "jump_timer")]
 script = ExtResource("8_u63yy")
 actor = NodePath("../..")
 animation = NodePath("../../AnimationPlayer")
 animator = NodePath("../../AnimatedSprite2D")
 dash_timer = NodePath("../../Timers/DashTimer")
 jump_timer = NodePath("../../Timers/JumpTimer")
-liquid_detection = NodePath("../../Detection/LiquidDetection")
 
 [node name="PlayerDash" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "damage_detection", "animator", "animation", "dash_timer", "crash_timer")]
 script = ExtResource("9_s3h73")
@@ -372,7 +311,7 @@ animation = NodePath("../../AnimationPlayer")
 dash_timer = NodePath("../../Timers/DashTimer")
 crash_timer = NodePath("../../Timers/CrashTimer")
 
-[node name="PlayerMovement" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animator", "animation", "coyote_timer", "dash_timer", "jump_timer", "liquid_detection")]
+[node name="PlayerMovement" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animator", "animation", "coyote_timer", "dash_timer", "jump_timer")]
 script = ExtResource("8_ip4se")
 actor = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
@@ -380,9 +319,8 @@ animation = NodePath("../../AnimationPlayer")
 coyote_timer = NodePath("../../Timers/CoyoteJumpTimer")
 dash_timer = NodePath("../../Timers/DashTimer")
 jump_timer = NodePath("../../Timers/JumpTimer")
-liquid_detection = NodePath("../../Detection/LiquidDetection")
 
-[node name="PlayerJump" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "jump_timer", "coyote_jump_timer", "wall_jump_timer", "dash_timer", "animation", "animator", "movement_obj_detection", "liquid_detection")]
+[node name="PlayerJump" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "jump_timer", "coyote_jump_timer", "wall_jump_timer", "dash_timer", "animation", "animator", "movement_obj_detection")]
 script = ExtResource("13_y4bgm")
 actor = NodePath("../..")
 jump_timer = NodePath("../../Timers/JumpTimer")
@@ -392,7 +330,6 @@ dash_timer = NodePath("../../Timers/DashTimer")
 animation = NodePath("../../AnimationPlayer")
 animator = NodePath("../../AnimatedSprite2D")
 movement_obj_detection = NodePath("../../Detection/MovementObjDetection")
-liquid_detection = NodePath("../../Detection/LiquidDetection")
 
 [node name="PlayerSlide" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "damage_detection", "animator", "animation", "dash_timer", "crash_timer")]
 script = ExtResource("14_axm0f")
