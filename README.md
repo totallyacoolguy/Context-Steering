@@ -12,7 +12,7 @@ The enemy have 5 states: idle, chase, surround, out of sight, tackle. These stat
 
 ### ✍️ Author
 
-Hi, I'm [Colin Thai](https://github.io)! With my platformer relying heavily on immersive enemy ai, I knew that a context steering agent would be the best way to have complex and engaging ai. Though quite arduous tsk from the complex linear algebra, a presentable project is finally done.
+Hi, I'm [Colin Thai](https://github.io)! With my platformer relying heavily on immersive enemy ai, I knew that a context steering agent would be the best way to have complex and engaging ai. Though quite arduous task from the complex linear algebra, a presentable project is finally done.
 
 ## 🌟 Highlights
 
