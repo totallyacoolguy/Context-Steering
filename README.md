@@ -16,9 +16,11 @@ Hi, I'm [Colin Thai](https://github.io)! With my platformer relying heavily on i
 
 ## 🌟 Highlights
 
-- Some functionality made easy!
-- This problem handled
-- etc.
+Debug rays turned on
+![](https://github.com/totallyacoolguy/Context-Steering/blob/main/GIFS/DEBUG_RAYS_ENEMY.gif)
+
+Multiple enemies at the same time with debug rays off
+![](https://github.com/totallyacoolguy/Context-Steering/blob/main/GIFS/MULTIPLE_ENEMY_RUN.gif)
 
 ## ⬇️ Installation
 
