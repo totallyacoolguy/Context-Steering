@@ -35,5 +35,6 @@ gravity_limit = 350
 flip_threshold = 3
 out_of_sight_threshold = 10
 tackle_finish_threshold = 8
+stopping_threshold = 10
 halt_distance = 25
 show_debug_rays = false
