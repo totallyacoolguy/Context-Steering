@@ -179,7 +179,7 @@ func resize_arrays() -> void:
 	character_data.danger.resize(character_data.num_arrays)
 	character_data.ray_direction.resize(character_data.num_arrays)
 
-func update_debug_rays(rays: Array, show: bool) -> void:
-	if (not show): return
+func update_debug_rays(rays: Array, show_rays: bool) -> void:
+	if (not show_rays): return
 	debug_rays = rays
 	queue_redraw()

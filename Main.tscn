@@ -46,7 +46,7 @@ HP = 4
 gravity_scale = 1.0
 speed = 100.0
 friction = 1000.0
-acceleration = 2.0
+acceleration = 3.0
 Hdamage_bounce = 100
 Ldamage_bounce = 200
 push = 15.0
@@ -68,6 +68,7 @@ gravity_limit = 350
 flip_threshold = 3
 out_of_sight_threshold = 10
 tackle_finish_threshold = 8
+stopping_threshold = 10
 halt_distance = 25
 show_debug_rays = false
 

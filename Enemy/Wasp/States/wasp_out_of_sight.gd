@@ -42,7 +42,6 @@ func _physics_process(delta: float) -> void:
 	set_danger()
 	choose_direction()
 	chase_player(delta)
-	print("fsjfds")
 	
 	if (out_of_sight()):
 		idle.emit()
@@ -83,8 +82,8 @@ func draw_debug_rays(ray_origin: Vector2, ray_end: Vector2, collided: bool, rays
 	])
 
 func out_of_sight() -> bool:
-	var reached_x: bool = abs(actor.velocity.x) <= 5
-	var reached_y: bool = abs(actor.velocity.y) <= 5
+	var reached_x: bool = abs(actor.velocity.x) <= actor.character_data.stopping_threshold
+	var reached_y: bool = abs(actor.velocity.y) <= actor.character_data.stopping_threshold
 	return reached_x and reached_y
 
 func set_danger() -> void:

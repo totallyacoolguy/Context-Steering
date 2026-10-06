@@ -59,8 +59,7 @@ func chase_player(delta: float) -> void:
 	var desired_velocity: Vector2 = actor.character_data.chosen_dir * actor.character_data.speed
 	var input_axis_x: float = Input.get_axis("move_left", "move_right")
 	var input_axis_y: float = Input.get_axis("move_up", "move_down")
-	## Stop movement when close enough
-	if (abs(actor.velocity.x) < 3 and abs(actor.velocity.y) < 3 and input_axis_x == 0 and input_axis_y == 0):
+	if (stopping_distance() and input_axis_x == 0 and input_axis_y == 0):
 		actor.velocity = Vector2.ZERO
 	else:
 		actor.velocity = actor.velocity.lerp(desired_velocity, actor.character_data.acceleration * delta)
@@ -106,3 +105,8 @@ func set_interest(player_dir: Vector2) -> void:
 		var normalized_player_dir: Vector2 = player_dir.normalized()
 		var dot: float = actor.character_data.ray_direction[i].dot(normalized_player_dir)
 		actor.character_data.interest[i] = max(actor.character_data.min_dot_chase, dot)
+
+func stopping_distance() -> bool:
+	var reached_x: bool = abs(actor.velocity.x) <= actor.character_data.stopping_threshold
+	var reached_y: bool = abs(actor.velocity.y) <= actor.character_data.stopping_threshold
+	return reached_x and reached_y

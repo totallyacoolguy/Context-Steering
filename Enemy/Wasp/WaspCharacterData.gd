@@ -35,5 +35,6 @@ extends Resource
 @export var flip_threshold: int = 3
 @export var out_of_sight_threshold: int = 10
 @export var tackle_finish_threshold: int = 8
+@export var stopping_threshold: int = 10
 @export var halt_distance: int = 30
 @export var show_debug_rays: bool = false
